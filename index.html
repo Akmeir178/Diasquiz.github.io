@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DiasQuiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    .question {
+      background: #fff;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+    .question p {
+      margin: 5px 0;
+    }
+    .correct {
+      color: green;
+    }
+    .incorrect {
+      color: red;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>DiasQuiz</h1>
+  <form id="quizForm">
+    <!-- СҰРАҚТАР -->
+  </form>
+  <button onclick="checkAnswers()">Жауаптарды тексеру</button>
+
+  <script>
+    const questions = [
+      {
+        q: "1. Төмендегі элементтердің қайсысы электрлік тізбектегі активті элемент болып табылады?",
+        options: ["A) Резистор", "B) Конденсатор", "C) Транзистор", "D) Индуктивтілік"],
+        answer: 2
+      },
+      {
+        q: "2. Диодтың жұмыс принципі",
+        options: ["A) Ол токтың екі бағытта да өтуіне мүмкіндік береді.",
+                  "B) Ол токты белгілі бір мәнге дейін шектейді.",
+                  "C) Ол токтың тек бір бағытта өтуіне мүмкіндік береді.",
+                  "D) Ол электр тогын өткізбейді."],
+        answer: 2
+      },
+      // Осы жерге 3–40 сұрақтарды қосу керек
+      {
+        q: "40. Дыбысты аналогтық пішіннен цифрлық түрге түрлендіруге арналған құрылғы:",
+        options: ["A) Винчестер", "B) трекбол", "C) жедел жад", "D) дыбыс картасы"],
+        answer: 3
+      }
+    ];
+
+    const form = document.getElementById("quizForm");
+
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<p>${q.q}</p>` + q.options.map((opt, j) => `
+        <label>
+          <input type="radio" name="q${i}" value="${j}">
+          ${opt}
+        </label><br/>
+      `).join("");
+      form.appendChild(div);
+    });
+
+    function checkAnswers() {
+      const results = document.querySelectorAll(".question");
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        const answerDiv = results[i];
+        const correctIndex = q.answer;
+        const labels = answerDiv.querySelectorAll("label");
+        labels.forEach((label, j) => {
+          label.classList.remove("correct", "incorrect");
+          if (j === correctIndex) label.classList.add("correct");
+        });
+        if (!selected || parseInt(selected.value) !== correctIndex) {
+          if (selected) labels[selected.value].classList.add("incorrect");
+        }
+      });
+      alert("Жауаптар тексерілді!");
+    }
+  </script>
+</body>
+</html>
